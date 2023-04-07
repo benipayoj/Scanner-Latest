@@ -44,8 +44,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> 
-    <!-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"></script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
@@ -109,14 +109,11 @@
           </div>
 
           <div class="alert alert-light alert-dismissible justify-content-center text-center  px-3 position-absolute start-50 translate-middle"  id="room_selection" style="top:60%;display:none;min-width:25rem">
-                <div class="d-grid w-100">
-                <select class="form-control d-flex align-items-center mb-3"  name="Room" id="Room">
-                  <option value="" selected>Please select camera</option>
+                <div class="d-flex justify-content-center align-item-center w-100">
+                <select class="form-control d-flex align-items-center"  name="Room" id="Room">
+
                 </select>
-              <div>
-              <button type="button" id="open_camera_perRoom" class="btn btn-primary mx-2 w-100 p-0 py-2 mb-3"> Select Room </button>
-              <button type="button" class="btn btn-danger mx-2 w-100 p-0 py-2 mb-3 close">I'll take mine </button>
-              </div>
+              <button type="button" id="open_camera_perRoom" class="btn btn-primary mx-2 w-50 p-0"> Select Room </button>
                 </div>
             </div>
 
@@ -246,7 +243,7 @@ $(function() {
         }
         else{
           $('.alert').hide();
-          $('.alert-success').show();
+          $('.alert-success').show().addClass('d-grid');
           $('.message').html(response.message);
           // $('#faculty').val('');
         }
@@ -295,27 +292,24 @@ function getRow(id){
   });
 }
 
-$(document).ready(function(){
-			$('#snapShot').click(function(){
-				var faculty = $('#faculty').val();
+// $(document).ready(function(){
+// 			$('#snapShot').click(function(){
+// 				var faculty = $('#faculty').val();
 
-				$.ajax({
-					url: 'selfieCapture.php',
-					type: 'POST',
-					data: { faculty: faculty},
-					success: function(response){
-						// $('#qr_container').html(response);
-					}
-				});
-			});
+// 				$.ajax({
+// 					url: 'selfieCapture.php',
+// 					type: 'POST',
+// 					data: { faculty: faculty},
+// 					success: function(response){
+// 						// $('#qr_container').html(response);
+// 					}
+// 				});
+// 			});
 
-      $('.close').click(function(){
-				$(this).parent().css('display','none')
-			});
-      $('.close').click(function(){
-				$(this).parent().parent().parent().css('display','none')
-			});
-		});
+//       $('.close').click(function(){
+// 				$(this).parent().css('display','none')
+// 			});
+// 		});
 
     
 $('#sync').on('click',function(){

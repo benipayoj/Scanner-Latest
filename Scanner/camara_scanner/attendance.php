@@ -1,7 +1,4 @@
 <?php
-
-	date_default_timezone_set("Asia/Manila");	
-
 	if(isset($_POST['faculty'])){
 		$output = array('error'=>false);
 
@@ -24,43 +21,28 @@
 			if($status == 'in'){
 
 				$sql = "SELECT * FROM attendance WHERE facultyID = '$facultyID' AND date = '$date_now' AND time_in IS NOT NULL AND status != '0'";
-				// $sql = "SELECT * FROM attendance INNER JOIN faculty_subject_schedule ON attendance.facultyID = faculty_subject_schedule.facultyID WHERE facultyID = '$facultyID' AND date = '$date_now' AND time_in IS NOT NULL AND status != '0'";
-				
-				
+				// $sql = "SELECT * FROM attendance WHERE facultyID = '$facultyID' AND date = '$date_now' AND time_in IS NOT NULL";
 				$query = $conn->query($sql);
-				
+
 				if($query->num_rows > 0){
-					
+
 					$output['error'] = true;
 					$output['message'] = 'You have timed in for today';
 				}else{
 					//updates
 					$facultyID = $row['facultyID'];
-					
 					$sched = $row['schedule_id'];
-					$time = date("h:i:sa"); // Input time in 12-hour format
-					$time_24hrs_format = date('H:i:s', strtotime($time));
-					
+					$lognow = date('H:i:s');
+
 					$sql = "SELECT * FROM schedules WHERE id = '$sched'";
 					$squery = $conn->query($sql);
-					
+
 					$srow = $squery->fetch_assoc();
 					// $logstatus = ($lognow > $srow['time_in']) ? 1 : 0;
-					$logstatus = ($srow['time_in'] > $time_24hrs_format ) ? 0 : 1;
-					
+					$logstatus = ($lognow > $srow['time_in']) ? 1 : 0;
 					//
-					// $sql = "INSERT INTO attendance (facultyID, date, time_in, status, subjectID) VALUES ('$facultyID', '$date_now', NOW(), '$logstatus','$subjectID')";
 					$sql = "INSERT INTO attendance (facultyID, date, time_in, status) VALUES ('$facultyID', '$date_now', NOW(), '$logstatus')";
-					
-					// $sql = "SELECT * FROM attendance INNER JOIN faculty_subject_schedule ON attendance.facultyID = faculty_subject_schedule.facultyID WHERE facultyID = '$facultyID' AND date = '$date_now' AND time_in IS NOT NULL AND status != '0'";
-					// $nquery = $conn->query($sql);
-					
-					// $nrow = $nquery->fetch_assoc();
 
-					// $studentID = $nrow['subjectID']
-					// $sql = "INSERT INTO attendance (studentID) VALUES ('$studentID') where fac";
-
-					
 					if($conn->query($sql)){
 						$output['message'] = 'Time in: '.$row['faculty_firstname'].' '.$row['faculty_lastname'].' '.'"Please take a screenshot"';
 					}
