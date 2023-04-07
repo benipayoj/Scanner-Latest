@@ -58,7 +58,7 @@
 					// $nrow = $nquery->fetch_assoc();
 
 					// $studentID = $nrow['subjectID']
-					// $sql = "INSERT INTO attendance (studentID) VALUES ('$studentID') where fac";
+					// $sql = "INSERT INTO attendance (studentID) VALUES ('$studentID') where faculty";
 
 					
 					if($conn->query($sql)){

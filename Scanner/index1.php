@@ -75,7 +75,7 @@
   <div class="container-fluid row">
     <div class="col-md-6 d-flex align-items-center justify-content-center py-4" style="background:#065280;">
       <div class="my-4 text-center fs-3 text-light p-4 position-fixed top-0 mt-4" >
-        <h3 class="fw-bold">COMPUTER BASED FACULTY MONITORING SYSTEM FOR QUEZON CITY UNIVERSITY</h3>
+        <h3 class="fw-bold">Web-based Faculty Weekly Accomplishment Report for Quezon City University</h3>
           <div class="container">
           <img src="./public/qcu-logo-2019-1@2x.png" class="m-4" width="200" height="200" class="logo" alt="">
             <hr class="px-4 border-4 rounded-2">
