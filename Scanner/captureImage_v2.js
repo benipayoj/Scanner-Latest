@@ -7,8 +7,6 @@
 //   Webcam.attach("#my_camera2");
 //   $("#my_camera2 video").attr("id", "camera2");
 // }
-
-console.log('working properly');
 const date = new Date();
 const currentDay = new Intl.DateTimeFormat("en-us", {
   dateStyle: "medium",
@@ -157,7 +155,7 @@ navigator.mediaDevices.enumerateDevices().then(function (devices) {
     const open_camera = document.querySelector("#open_camera_perRoom");
     open_camera.addEventListener("click", open_selected_camera);
 
-   
+    let index = 0;
     let available_camera = [];
     let used_camera = [];
 
@@ -167,14 +165,13 @@ navigator.mediaDevices.enumerateDevices().then(function (devices) {
       }
     });
 
-     function open_selected_camera(e) {
-      // e.preventDefault();
-      let index = 0;
+    async function open_selected_camera(e) {
+      e.preventDefault();
       let deviceId = $("#Room").val();
-    
+
+      console.log(deviceId);
+      // index++;
       let faculty_qr = $("#faculty").val();
-      
-     
 
       if ((available_camera.length = 0)) {
         alert("No Device Available");
@@ -183,9 +180,7 @@ navigator.mediaDevices.enumerateDevices().then(function (devices) {
           alert("Please select a room");
           return;
         } else {
-          
           index++;
-          console.log(index);
           create_stream(`my_camera_${index}`, "camera", index, faculty_qr);
           attach_webcam(deviceId, index);
           $(".alert").hide();
@@ -253,8 +248,8 @@ function camera_autoCapture(img_container, camera) {
     for (let i = 0; i < 10; i++) {
       var randNum = Math.floor(Math.random() * 10) + 1;
     }
-    time = `${randNum + gracePeriod}0000`;
-    var timeout = `${randNum + gracePeriod}4000`;
+    time = `${randNum + gracePeriod}000`;
+    var timeout = `${randNum + gracePeriod}400`;
 
     const autoCapture = setInterval(() => {
       autoCapture_camera(img_container);

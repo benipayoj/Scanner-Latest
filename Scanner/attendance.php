@@ -63,6 +63,7 @@
 					
 					if($conn->query($sql)){
 						$output['message'] = 'Time in: '.$row['faculty_firstname'].' '.$row['faculty_lastname'].' '.'"Please take a screenshot"';
+						$output['success'] = true; // Added success flag
 					}
 					else{
 						$output['error'] = true;

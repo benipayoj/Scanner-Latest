@@ -260,21 +260,6 @@ $(function() {
 
 
 <script>
-$(function(){
-  $('.edit').click(function(e){
-    e.preventDefault();
-    $('#edit').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-  $('.delete').click(function(e){
-    e.preventDefault();
-    $('#delete').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-});
 
 function getRow(id){
   $.ajax({
@@ -285,12 +270,9 @@ function getRow(id){
     success: function(response){
       $('#datepicker_edit').val(response.date);
       $('#attendance_date').html(response.date);
-      $('#edit_time_in').val(response.time_in);
-      $('#edit_time_out').val(response.time_out);
       $('#attid').val(response.attid);
       $('#faculty_name').html(response.faculty_firstname+' '+response.faculty_lastname);
-      $('#del_attid').val(response.attid);
-      $('#del_faculty_name').html(response.faculty_firstname+' '+response.faculty_lastname);
+
     }
   });
 }
