@@ -1,0 +1,17 @@
+[
+    {
+        "parameter": "scanner",
+        "deviceId": "920b75ac181a03bbe5920d51c6865416db135d140502bf48f4b19f8b71ff38d6",
+        "label": "Integrated Camera (13d3:784b)"
+    },
+    {
+        "parameter": "ac207",
+        "deviceId": "ee3a38963569ac35e36d14d4fb66b219394d2e0f63365652142b65eb6ebc767a",
+        "label": "USB Camera (0c45:6340)"
+    },
+    {
+        "parameter": "ac203",
+        "deviceId": "5d290155602fedccec3949a6bffd92754e523ace3664030bf8f1b6c3908f1ed7",
+        "label": "VGA Webcam (0bda:57b3)"
+    }
+]
