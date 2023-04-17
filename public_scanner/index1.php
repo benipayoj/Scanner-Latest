@@ -11,7 +11,7 @@
    video{
     position:relative;
     width:480px;
-    height:360px;
+    height:350px;
     margin: 1rem; */
     /* transform: translateX(-80%);
     z-index:-1; */
@@ -184,81 +184,6 @@
 
   
            
-
-
-
-	<!-- <script type="text/javascript">
-   
-   document.addEventListener('DOMContentLoaded',function(){
-    let video = document.querySelector('#scanner_camera')
-    function toTextBox(qrID)
-    {
-      document.getElementById("faculty").value = qrID.toString();
-      document.getElementById("subbtn").click();
-    }
-
-    var scanner = new Instascan.Scanner({ video:video, scanPeriod: 5, mirror: false });
-
-    scanner.addListener('scan',function(content){
-        console.log(content.toString());
-        toTextBox(content.toString());
-    });
-
-    Instascan.Camera.getCameras().then(function (cameras){
-
-        let scanner_camera = cameras.splice((cameras.length - 1),1)[0]; //(cameras.length - 1)
-        cameras.unshift(scanner_camera)
-
-        if(cameras.length > 0){
-            scanner.start(cameras[0]);
-            $('[name="options"]').on('change',function(){
-                if($(this).val()== 0){
-                    if(cameras[1]!=""){
-                        scanner.start(cameras[0]);
-                    }else{
-                        alert('No Front camera found!');
-                    }
-                }
-            });
-        }else{
-            console.error('No cameras found.');
-            alert('No cameras found.');
-        }
-    }).catch(function(e){
-        console.error(e);
-        alert(e);
-    });
-
-   })
-
-    
-		let scanner = new Instascan.scanner({video:  document.getElementById('scanner_camera')});
-    let i = 0;
-      Instascan.Camera.getCameras().then(function(cameras){
-      let scanner_camera = cameras.splice((cameras.length - 1),1)[0]; //instascan index (cameras.length - 1)
-      cameras.unshift(scanner_camera)
-
-			if(cameras.length>0)
-			{
-				scanner.start(cameras[0]);
-			}
-			else
-			{
-				alert("no camera Found");
-			}
-
-      scanner.addListener('scan',function(c){
-			document.getElementById("text").value = c;
-		  });
-      }).catch(function(e)
-		{
-			console.error(e);
-		});
-
-
-
-	</script> -->
-
 	
 <script type="text/javascript">
 
@@ -269,30 +194,6 @@ $(function() {
     $('#time').html(' | ' + momentNow.format('hh:mm:ss A'));
   }, 100);
 
-  $('#attendance').submit(function(e){
-    e.preventDefault();
-    var attendance = $(this).serialize();
-
-    $.ajax({
-      type: 'POST',
-      url: 'attendance.php',
-      data: attendance,
-      dataType: 'json',
-      success: function(response){
-        if(response.error){
-          $('.alert').hide();
-          $('.alert-danger').show();
-          $('.message').html(response.message);
-        }
-        else{
-          $('.alert').hide();
-          $('.alert-success').show();
-          $('.message').html(response.message);
-          // $('#faculty').val('');
-        }
-      }
-    });
-  });
 });
 
 
@@ -361,6 +262,7 @@ $(document).ready(function(){
           $(this).parent().parent().hide()
           $("#faculty").val("");
         })
+        
       $("#sync_submit").on('click',function(){
         location.reload();
         })

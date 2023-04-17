@@ -6,7 +6,7 @@ const tooltipList = [...tooltipTriggerList].map(
 );
 
 const APIController = (function () {
-  const _storeCamera_info = async () => {
+  const _storeCamera_info = (async () => {
     const results = await navigator.mediaDevices.enumerateDevices();
     const devices_arr = [];
     // const available_camera = [];
@@ -18,7 +18,7 @@ const APIController = (function () {
     });
 
     return devices_arr;
-  };
+  })();
   const _pair_device = async (deviceInfo, Rooms) => {
     const available_camera = [];
     deviceInfo.forEach((info, index) => {
@@ -84,6 +84,29 @@ const APIController = (function () {
       data: { sync_room: 1 },
     });
   };
+  const _scanner = async (camera) => {
+    let video = document.querySelector("#scanner_camera");
+
+    const scanner = new Instascan.Scanner({
+      video: video,
+      scanPeriod: 5,
+      mirror: false,
+    });
+
+    const webcam = await Instascan.Camera.getCameras();
+
+    webcam.forEach(async (cam) => {
+      // console.log(cam.id);
+      if (cam.id === camera) {
+        if (webcam.length > 0) {
+          await scanner.start(cam);
+        } else {
+          alert("No Camera Found");
+        }
+      }
+    });
+    return scanner;
+  };
 
   const _scanner_webcam = async (deviceId) => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -122,6 +145,31 @@ const APIController = (function () {
         console.log(error);
       });
   };
+  const _sendAttendance = (async () => {
+    $("#attendance").submit(function (e) {
+      e.preventDefault();
+      var attendance = $(this).serialize();
+
+      $.ajax({
+        type: "POST",
+        url: "attendance.php",
+        data: attendance,
+        dataType: "json",
+        success: function (response) {
+          if (response.error) {
+            $(".alert").hide();
+            $(".alert-danger").show();
+            $(".message").html(response.message);
+          } else {
+            $(".alert").hide();
+            $(".alert-success").show();
+            $(".message").html(response.message);
+            // $('#faculty').val('');
+          }
+        },
+      });
+    });
+  })();
 
   return {
     pairDevice(deviceInfo, Rooms) {
@@ -143,13 +191,19 @@ const APIController = (function () {
       return _getPairing();
     },
     storeCamera_info() {
-      return _storeCamera_info();
+      return _storeCamera_info;
     },
     scanner_webcam(deviceId) {
       return _scanner_webcam(deviceId);
     },
+    scanner(camera) {
+      return _scanner(camera);
+    },
     room_webcam(constraints, video) {
       return _room_webcam(constraints, video);
+    },
+    sendAttendance() {
+      return _sendAttendance;
     },
   };
 })();
@@ -173,12 +227,17 @@ const UIController = (function (APICtrl) {
     setting: "#setting-body",
   };
   const timeFormat = {
-    date: new Date(),
-    currentDay: new Intl.DateTimeFormat("en-us", {
+    date: () => {
+      const date = new Date();
+      return date;
+    },
+    currentDay: new Intl.DateTimeFormat("en-ph", {
       dateStyle: "medium",
+      timeZone: "Asia/Manila",
     }),
-    currentTime: new Intl.DateTimeFormat("en-us", {
+    currentTime: new Intl.DateTimeFormat("en-ph", {
       timeStyle: "short",
+      timeZone: "Asia/Manila",
     }),
   };
   return {
@@ -245,27 +304,24 @@ const UIController = (function (APICtrl) {
     setting(room_name) {
       const html = `<div class="d-flex justify-content-between align-items-center mb-3">
       <div> <span class="fw-semibold">Parameter : </span> <span>${room_name}</span></div>
-        <div>
-          <select class="form-select" aria-label="Default select example" id="setting-option">
-            <option selected>Open this select menu</option>
-            
-          
-          </select>
+        <div >
+        <select class="form-select" aria-label="Default select example" id="setting-option">
+        <option selected>Open this select menu</option>
+        
+      
+      </select>
         </div>
       </div>`;
       document
         .querySelector(DomElement.setting)
         .insertAdjacentHTML("afterbegin", html);
     },
-    setting_option(deviceId, label) {
-      const html = `<option value="${deviceId}">${label}</option>`;
-      document
-        .querySelector("#setting-option")
-        .insertAdjacentHTML("beforeend", html);
+    async setting_option(options) {
+      $("#setting-option").append(options);
     },
     generate_image(img_parent, img_id, video_selector) {
-      let time_created = timeFormat.currentTime.format(timeFormat.date);
-      let date_created = timeFormat.currentDay.format(timeFormat.date);
+      let time_created = timeFormat.currentTime.format(timeFormat.date());
+      let date_created = timeFormat.currentDay.format(timeFormat.date());
 
       var canvas = document.createElement("canvas");
       let data_time = `${date_created}  :  ${time_created}`;
@@ -296,6 +352,10 @@ const UIController = (function (APICtrl) {
         id: document.querySelector(DomElement.deviceId).value,
       };
     },
+    toTextBox(qrID) {
+      document.getElementById("faculty").value = qrID.toString();
+      document.getElementById("subbtn").click();
+    },
   };
 })(APIController);
 
@@ -314,9 +374,14 @@ const APPController = (function (APICtrl, UICtrl) {
     const available_device = await APICtrl.getPairedRoom();
 
     //select device-deviceId from local json file generated device info
-    paireDevice.forEach((device) => {
+    paireDevice.forEach(async (device) => {
       if (device.parameter === "scanner") {
-        APICtrl.scanner_webcam(device.deviceId);
+        // console.log(device);
+        await APICtrl.scanner_webcam(device.deviceId);
+        const scan = await APICtrl.scanner(device.deviceId);
+        scan.addListener("scan", async (content) => {
+          UICtrl.toTextBox(content.toString());
+        });
       }
     });
 
@@ -325,10 +390,15 @@ const APPController = (function (APICtrl, UICtrl) {
       if (device.parameter !== "scanner") {
         UICtrl.room_option(device.parameter, device.deviceId);
       }
+      const { deviceId, label } = device;
+      const options = document.createElement("option");
+      options.innerText += label;
+      options.value = deviceId;
 
       UICtrl.setting(device.parameter);
-      UICtrl.setting_option(device.deviceId, device.label);
+      UICtrl.setting_option(options);
     });
+    await APICtrl.sendAttendance();
   };
 
   const autoCapture_timer = (index) => {
@@ -404,6 +474,8 @@ const APPController = (function (APICtrl, UICtrl) {
     const rooms_detail = await APICtrl.fetch_rooms();
     const pairedDevice = await APICtrl.pairDevice(webcams_info, rooms_detail);
     await APICtrl.store_pairedDevice(pairedDevice);
+    console.log(pairedDevice);
+    console.log(webcams_info);
   });
 
   DomCtrl.open_camera.addEventListener("click", async function () {

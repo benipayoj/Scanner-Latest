@@ -45,7 +45,7 @@
 					// $logstatus = ($lognow > $srow['time_in']) ? 1 : 0;
 					$logstatus = ($srow['time_in'] > $time_24hrs_format ) ? 0 : 1;
 					//
-					$sql = "INSERT INTO attendance (facultyID, date, time_in, status) VALUES ('$facultyID', '$date_now', NOW(), '$logstatus')";
+					$sql = "INSERT INTO attendance (facultyID, date, time_in, status) VALUES ('$facultyID', '$date_now', '$time', '$logstatus')";
 
 					if($conn->query($sql)){
 						$output['message'] = 'Time in: '.$row['faculty_firstname'].' '.$row['faculty_lastname'].' '.'"Please take a screenshot"';
@@ -73,7 +73,7 @@
 						$output['error'] = true;
 						$output['message'] = 'You have timed out for today';
 					}else{								
-						$sql = "UPDATE attendance SET time_out = NOW(), status ='0' WHERE facultyID = '$facultyID' AND status ='1'";
+						$sql = "UPDATE attendance SET time_out = '$time', status ='0' WHERE facultyID = '$facultyID' AND status ='1'";
 
 						if($conn->query($sql)){
 							$output['message'] = 'Time out: '.$row['faculty_firstname'].' '.$row['faculty_lastname'].'';
