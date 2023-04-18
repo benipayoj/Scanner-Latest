@@ -69,6 +69,7 @@
     <!-- <script type="module" src="captureImage_v2.js" defer></script> -->
 
     <script module src="./javascript/index.js" defer></script>
+    <script module src="./javascript/setting.js" defer></script>
     <!-- <script module src="./javascript/generate_camera.js" defer></script> -->
 </head>
 <body class=" bg-body-secondary">

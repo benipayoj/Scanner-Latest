@@ -43,7 +43,8 @@
 
 					$srow = $squery->fetch_assoc();
 					// $logstatus = ($lognow > $srow['time_in']) ? 1 : 0;
-					$logstatus = ($srow['time_in'] > $time_24hrs_format ) ? 0 : 1;
+					// $logstatus = ($srow['time_in'] > $time_24hrs_format ) ? 0 : 1;
+					// $logstatus = ($srow[''] > $time);
 					//
 					$sql = "INSERT INTO attendance (facultyID, date, time_in, status) VALUES ('$facultyID', '$date_now', '$time', '$logstatus')";
 
