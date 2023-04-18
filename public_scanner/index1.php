@@ -69,7 +69,7 @@
     <!-- <script type="module" src="captureImage_v2.js" defer></script> -->
 
     <script module src="./javascript/index.js" defer></script>
-    <script module src="./javascript/setting.js" defer></script>
+
     <!-- <script module src="./javascript/generate_camera.js" defer></script> -->
 </head>
 <body class=" bg-body-secondary">
@@ -158,7 +158,7 @@
       <div class="modal-body" id="setting-body">
 
       <div class="modal-footer">
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-primary" id="save-settings">Save</button>
         <button class="btn btn-danger"  data-bs-dismiss="modal">Close</button>
       </div>
     </div>

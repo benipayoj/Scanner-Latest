@@ -165,13 +165,17 @@ const APIController = (function () {
     });
   })();
   const _config_setting = async (parameter, label, deviceId) => {
+    // const details = [];
     const info = {
       parameter: parameter,
       label: label,
       deviceId: deviceId,
     };
+    // details.push(info);
+    console.log("my new info", info);
     return info;
   };
+
   return {
     pairingDevice(deviceInfo, Rooms) {
       return _pairing_device(deviceInfo, Rooms);
@@ -204,6 +208,9 @@ const APIController = (function () {
     sendAttendance() {
       return _sendAttendance;
     },
+    config_setting(parameter, label, deviceId) {
+      return _config_setting(parameter, label, deviceId);
+    },
   };
 })();
 
@@ -225,6 +232,7 @@ const UIController = (function (APICtrl) {
     closeModal: ".close",
     setting_container: "#setting-container",
     setting: "#setting-body",
+    setting_submit: "#save-settings",
   };
   const timeFormat = {
     date: () => {
@@ -265,6 +273,7 @@ const UIController = (function (APICtrl) {
         selfie_button: document.querySelector(DomElement.selfieCapture_button),
         open_camera: document.querySelector(DomElement.open_camera),
         sync_camera: document.querySelector(DomElement.sync),
+        save_setting: document.querySelector(DomElement.setting_submit),
       };
     },
 
@@ -395,6 +404,17 @@ const APPController = (function (APICtrl, UICtrl) {
         UICtrl.room_option(device.parameter, device.deviceId);
       }
       UICtrl.setting(device.parameter, index);
+
+      const setting_select = document.getElementById("setting-body_" + index);
+
+      setting_select.addEventListener("change", function () {
+        const input = $(this).parent().parent().children("input");
+        const label = $(this).children("option:selected").text();
+        const deviceId = $(input).val(this.value);
+        console.log(input.value);
+
+        const info = APICtrl.config_setting(device.parameter, label, deviceId);
+      });
     });
 
     for (var i = 0; i < paired_Device.length; i++) {
@@ -411,19 +431,6 @@ const APPController = (function (APICtrl, UICtrl) {
         selectContainer.add(option);
       }
     }
-
-    paired_Device.forEach((el, index) => {
-      const setting_select = document.getElementById("setting-body_" + index);
-
-      setting_select.addEventListener("change", function () {
-        const input = $(this).parent().parent().children("input");
-
-        const label = $(this).children("option:selected").text();
-        const deviceId = input.val(this.value);
-
-        // console.log(this.value);
-      });
-    });
     await APICtrl.sendAttendance();
   };
 
