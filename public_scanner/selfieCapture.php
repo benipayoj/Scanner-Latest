@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         $tmpName = $_FILES ["webcam"]["tmp_name"];
         $imageName = date ("Y.m.d") . " - " . date("h.i.sa") . ' .jpeg';
-        move_uploaded_file ($tmpName, '../img/' . $imageName);
+        move_uploaded_file ($tmpName, './img/' . $imageName);
 
         $query = "INSERT INTO  attendance_attachments(attendanceID,facultyID,attachment) VALUES ('$id','$faculty_id','$imageName')";
         // VALUES ('$date', '$imageName')
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $tmpName = $_FILES ["webcam"]["tmp_name"];
     $imageName = date ("Y.m.d") . " - " . date("h.i.sa") . ' .jpeg';
-    move_uploaded_file ($tmpName, '../img/' . $imageName);
+    move_uploaded_file ($tmpName, './img/' . $imageName);
 
   }
 

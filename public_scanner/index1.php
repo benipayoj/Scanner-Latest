@@ -11,7 +11,7 @@
    video{
     position:relative;
     width:480px;
-    height:360px;
+    height:350px;
     margin: 1rem; */
     /* transform: translateX(-80%);
     z-index:-1; */
@@ -69,6 +69,7 @@
     <!-- <script type="module" src="captureImage_v2.js" defer></script> -->
 
     <script module src="./javascript/index.js" defer></script>
+
     <!-- <script module src="./javascript/generate_camera.js" defer></script> -->
 </head>
 <body class=" bg-body-secondary">
@@ -84,7 +85,7 @@
       <div class=" text-center fs-3 text-light p-4 position-fixed top-0 left-0" >
         <h3 class="fw-bold p-2">COMPUTER BASED FACULTY MONITORING SYSTEM FOR QUEZON CITY UNIVERSITY</h3>
         <div class="container">
-          <img src="../public/qcu-logo-2019-1@2x.png" class="m-4" width="200" height="200" class="logo" alt="">
+          <img src="./public/qcu-logo-2019-1@2x.png" class="m-4" width="200" height="200" class="logo" alt="">
           <hr class="px-4 border-4 rounded-2">
         </div>
         <h3>Good Life Starts Here!</h3>
@@ -157,7 +158,7 @@
       <div class="modal-body" id="setting-body">
 
       <div class="modal-footer">
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-primary" id="save-settings">Save</button>
         <button class="btn btn-danger"  data-bs-dismiss="modal">Close</button>
       </div>
     </div>
@@ -169,14 +170,14 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel"><i class="fa-solid fa-gear mx-2" ></i>Settings</h1>
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel"><i class="fa-solid fa-gear mx-2" ></i>Refresh</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="setting-body">
-       <h3> Are You Sure you want to Refresh ?</h3>
+       <h4> Are You Sure you want to Refresh ?</h4>
       <div class="modal-footer">
-        <button class="btn btn-primary" id="sync_submit">Refresh</button>
-        <button class="btn btn-danger"  data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id="sync_submit">Yes</button>
+        <button class="btn btn-danger"  data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>
@@ -184,81 +185,6 @@
 
   
            
-
-
-
-	<!-- <script type="text/javascript">
-   
-   document.addEventListener('DOMContentLoaded',function(){
-    let video = document.querySelector('#scanner_camera')
-    function toTextBox(qrID)
-    {
-      document.getElementById("faculty").value = qrID.toString();
-      document.getElementById("subbtn").click();
-    }
-
-    var scanner = new Instascan.Scanner({ video:video, scanPeriod: 5, mirror: false });
-
-    scanner.addListener('scan',function(content){
-        console.log(content.toString());
-        toTextBox(content.toString());
-    });
-
-    Instascan.Camera.getCameras().then(function (cameras){
-
-        let scanner_camera = cameras.splice((cameras.length - 1),1)[0]; //(cameras.length - 1)
-        cameras.unshift(scanner_camera)
-
-        if(cameras.length > 0){
-            scanner.start(cameras[0]);
-            $('[name="options"]').on('change',function(){
-                if($(this).val()== 0){
-                    if(cameras[1]!=""){
-                        scanner.start(cameras[0]);
-                    }else{
-                        alert('No Front camera found!');
-                    }
-                }
-            });
-        }else{
-            console.error('No cameras found.');
-            alert('No cameras found.');
-        }
-    }).catch(function(e){
-        console.error(e);
-        alert(e);
-    });
-
-   })
-
-    
-		let scanner = new Instascan.scanner({video:  document.getElementById('scanner_camera')});
-    let i = 0;
-      Instascan.Camera.getCameras().then(function(cameras){
-      let scanner_camera = cameras.splice((cameras.length - 1),1)[0]; //instascan index (cameras.length - 1)
-      cameras.unshift(scanner_camera)
-
-			if(cameras.length>0)
-			{
-				scanner.start(cameras[0]);
-			}
-			else
-			{
-				alert("no camera Found");
-			}
-
-      scanner.addListener('scan',function(c){
-			document.getElementById("text").value = c;
-		  });
-      }).catch(function(e)
-		{
-			console.error(e);
-		});
-
-
-
-	</script> -->
-
 	
 <script type="text/javascript">
 
@@ -269,30 +195,6 @@ $(function() {
     $('#time').html(' | ' + momentNow.format('hh:mm:ss A'));
   }, 100);
 
-  $('#attendance').submit(function(e){
-    e.preventDefault();
-    var attendance = $(this).serialize();
-
-    $.ajax({
-      type: 'POST',
-      url: 'attendance.php',
-      data: attendance,
-      dataType: 'json',
-      success: function(response){
-        if(response.error){
-          $('.alert').hide();
-          $('.alert-danger').show();
-          $('.message').html(response.message);
-        }
-        else{
-          $('.alert').hide();
-          $('.alert-success').show();
-          $('.message').html(response.message);
-          // $('#faculty').val('');
-        }
-      }
-    });
-  });
 });
 
 
@@ -300,40 +202,7 @@ $(function() {
 
 
 <script>
-$(function(){
-  $('.edit').click(function(e){
-    e.preventDefault();
-    $('#edit').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
 
-  $('.delete').click(function(e){
-    e.preventDefault();
-    $('#delete').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-});
-
-function getRow(id){
-  $.ajax({
-    type: 'POST',
-    url: 'attendance_row.php',
-    data: {id:id},
-    dataType: 'json',
-    success: function(response){
-      $('#datepicker_edit').val(response.date);
-      $('#attendance_date').html(response.date);
-      $('#edit_time_in').val(response.time_in);
-      $('#edit_time_out').val(response.time_out);
-      $('#attid').val(response.attid);
-      $('#faculty_name').html(response.faculty_firstname+' '+response.faculty_lastname);
-      $('#del_attid').val(response.attid);
-      $('#del_faculty_name').html(response.faculty_firstname+' '+response.faculty_lastname);
-    }
-  });
-}
 
 $(document).ready(function(){
 			$('#snapShot').click(function(){
@@ -361,6 +230,7 @@ $(document).ready(function(){
           $(this).parent().parent().hide()
           $("#faculty").val("");
         })
+        
       $("#sync_submit").on('click',function(){
         location.reload();
         })

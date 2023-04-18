@@ -1,17 +1,17 @@
 [
     {
-        "parameter": "scanner",
-        "deviceId": "920b75ac181a03bbe5920d51c6865416db135d140502bf48f4b19f8b71ff38d6",
-        "label": "Integrated Camera (13d3:784b)"
+        "parameter": "ac203",
+        "deviceId": "a193c844e71abef8dd658c532088319691cc1c5f8a0f00309850baa0899de9ea",
+        "label": "Integrated Camera (0c45:64ab)"
     },
     {
         "parameter": "ac207",
-        "deviceId": "ee3a38963569ac35e36d14d4fb66b219394d2e0f63365652142b65eb6ebc767a",
-        "label": "USB Camera (0c45:6340)"
+        "deviceId": "09690c16b5a3ae7aca801200111a09a6793a96aef59224e78e65bf0c8f6b5af7",
+        "label": "Integrated Camera (13d3:784b)"
     },
     {
-        "parameter": "ac203",
-        "deviceId": "5d290155602fedccec3949a6bffd92754e523ace3664030bf8f1b6c3908f1ed7",
-        "label": "VGA Webcam (0bda:57b3)"
+        "parameter": "scanner",
+        "deviceId": "ab885cca3ba2afad5f93959d78039a879b71425be9b49c8d87bd0dd355b5510a",
+        "label": "HD WebCam (0bda:57f3)"
     }
 ]

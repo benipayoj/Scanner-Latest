@@ -15,8 +15,8 @@
 		$query = $conn->query($sql);
 
 		if($query->num_rows > 0){
-			$row = $query->fetch_assoc();
 
+			$row = $query->fetch_assoc();
 			$id = $row['id'];
 			$facultyID = $row['facultyID'];
 			$date_now = date('Y-m-d');
@@ -34,20 +34,20 @@
 				}else{
 					//updates
 					$facultyID = $row['facultyID'];
-					$sched = $row['schedule_id'];
+					// $sched = $row['schedule_id'];
 					$time = date("h:i:sa"); // Input time in 12-hour format
 					$time_24hrs_format = date('H:i:s', strtotime($time));
 
-					$sql = "SELECT * FROM schedules WHERE id = '$sched'";
-					$squery = $conn->query($sql);
+					// $sql = "SELECT * FROM schedule_faculty WHERE id = '$sched'";
+					// $squery = $conn->query($sql);
 
-					$srow = $squery->fetch_assoc();
+					// $srow = $squery->fetch_assoc();
 					// $logstatus = ($lognow > $srow['time_in']) ? 1 : 0;
-					$logstatus = ($srow['time_in'] > $time_24hrs_format ) ? 0 : 1;
+					// $logstatus = ($srow['time_in'] > $time_24hrs_format ) ? 0 : 1;
 					//
-					$sql = "INSERT INTO attendance (facultyID, date, time_in, status) VALUES ('$facultyID', '$date_now', NOW(), '$logstatus')";
+					$nsql = "INSERT INTO attendance (facultyID, date, time_in, status) VALUES ('$facultyID', '$date_now', '$time', '1')";
 
-					if($conn->query($sql)){
+					if($conn->query($nsql)){
 						$output['message'] = 'Time in: '.$row['faculty_firstname'].' '.$row['faculty_lastname'].' '.'"Please take a screenshot"';
 					}
 					else{
@@ -66,14 +66,14 @@
 					$output['error'] = true;
 					$output['message'] = 'Cannot Timeout. No time in.';
 				}else{
-
+					$time = date("h:i:sa");
 					$nrow = $query->fetch_assoc();
 					// $logstatus = ($lognow > $row['time_out']) ? 1 : 0;
 					if($nrow['time_out'] != '00:00:00'){
 						$output['error'] = true;
 						$output['message'] = 'You have timed out for today';
 					}else{								
-						$sql = "UPDATE attendance SET time_out = NOW(), status ='0' WHERE facultyID = '$facultyID' AND status ='1'";
+						$sql = "UPDATE attendance SET time_out = '$time', status ='0' WHERE facultyID = '$facultyID' AND status ='1'";
 
 						if($conn->query($sql)){
 							$output['message'] = 'Time out: '.$row['faculty_firstname'].' '.$row['faculty_lastname'].'';
